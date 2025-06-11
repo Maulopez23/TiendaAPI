@@ -19,7 +19,7 @@ namespace TiendaAPI.Controllers
         [HttpGet] //
         public async Task<ActionResult<IEnumerable<Categoria>>> GetCategorias() // Endpoint para obtener todas las categorías
         {
-            return await _context.Categorias.ToListAsync();
+            return await _context.Categorias.ToListAsync(); // Retorna una lista de categorías
         }
 
         [HttpPost]
@@ -28,9 +28,20 @@ namespace TiendaAPI.Controllers
             _context.Categorias.Add(categoria);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCategorias), new { id = categoria.Id }, categoria);
+            return CreatedAtAction(nameof(GetCategorias), new { id = categoria.Id }, categoria); // Retorna 201 Created con la ubicación del nuevo recurso
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarCategoria(int id) // Endpoint para eliminar una categoría por ID
+        {
+            var categoria = await _context.Categorias.FindAsync(id);
+            if (categoria == null)
+            {
+                return NotFound();
+            }
+            _context.Categorias.Remove(categoria);
+            await _context.SaveChangesAsync();
+            return NoContent(); // Retorna 204 No Content si la eliminación fue exitosa
 
-    }
+        }
 }
