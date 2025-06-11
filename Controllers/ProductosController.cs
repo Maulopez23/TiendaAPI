@@ -34,7 +34,7 @@ namespace TiendaAPI.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(productos);
+            return Ok(productos); // Retornar 200 OK con la lista de productos
         }
 
         [HttpGet("{id}")]
@@ -56,7 +56,7 @@ namespace TiendaAPI.Controllers
             if (producto == null)
                 return NotFound();
 
-            return Ok(producto);
+            return Ok(producto); // Retornar 200 OK con el producto encontrado
         }
 
         [HttpPost]
@@ -81,7 +81,7 @@ namespace TiendaAPI.Controllers
         {
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
-                return NotFound();
+                return NotFound(); // Si el producto no existe, retornar 404 Not Found
 
             producto.Nombre = dto.Nombre;
             producto.Precio = dto.Precio;
@@ -89,7 +89,7 @@ namespace TiendaAPI.Controllers
             producto.CategoriaId = dto.CategoriaId;
 
             await _context.SaveChangesAsync();
-            return NoContent();
+            return NoContent(); // Retornar 204 No Content si la actualización fue exitosa
         }
 
         [HttpDelete("{id}")]
@@ -97,12 +97,12 @@ namespace TiendaAPI.Controllers
         {
             var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
-                return NotFound();
+                return NotFound(); // Si el producto no existe, retornar 404 Not Found
 
             _context.Productos.Remove(producto);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return NoContent(); // Retornar 204 No Content si la eliminación fue exitosa
         }
     }
 }
